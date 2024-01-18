@@ -3,6 +3,7 @@ package com.tommyfuture.tipcalculator.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -46,14 +47,10 @@ fun InputField(
     OutlinedTextField(value = valueState.value,
         onValueChange = { valueState.value = it },
         label = { Text(text = labelId) },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Rounded.AttachMoney, contentDescription = "Thumb Icon"
-            )
-        },
+        leadingIcon = { Icon(imageVector = Icons.Rounded.AttachMoney, contentDescription = "Thumb Icon") },
         singleLine = isSingleLine,
         textStyle = TextStyle(fontSize = 18.sp),
-        modifier = modifier,
+        modifier = modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp).fillMaxWidth(),
         enabled = enabled,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         keyboardActions = onAction
@@ -73,8 +70,7 @@ fun RoundIconButtons(
 ) {
     Card(modifier = modifier
         .padding(all = 4.dp)
-        .clickable { onClick.invoke() }
-        .then(IconButtonSizeModifier),
+        .clickable { onClick.invoke() }.then(IconButtonSizeModifier),
         shape = CircleShape,
         colors = CardDefaults.cardColors(backgroundColor),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)

@@ -157,9 +157,7 @@ fun BillForm(
         border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
         Column {
-            InputField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(6.dp),
+            InputField(modifier = Modifier,
                 valueState = totalBillState,
                 labelId = "Enter Bill",
                 enabled = true,
@@ -171,20 +169,11 @@ fun BillForm(
                 }
             )
             if (validState) {
-                Row(
-                    modifier = Modifier.padding(3.dp),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Text(
-                        text = "Split", modifier = Modifier
-                            .padding(start = 20.dp)
-                            .align(
-                                alignment = Alignment.CenterVertically
-                            )
+                Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
+                    Text(text = "Split", modifier = Modifier.align(alignment = Alignment.CenterVertically)
                     )
                     Spacer(modifier = Modifier.width(120.dp))
-                    Row(
-                        modifier = Modifier.padding(horizontal = 3.dp),
+                    Row(modifier = Modifier.padding(horizontal = 3.dp),
                         horizontalArrangement = Arrangement.End
                     ) {
                         RoundIconButtons(imageVector = Icons.Default.Remove,
@@ -197,11 +186,7 @@ fun BillForm(
                                     tipPercentage
                                 )
                             })
-                        Text(
-                            text = "2", modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(start = 9.dp, end = 9.dp)
-                        )
+                        Text(text = "${splitByState.value}", modifier = Modifier.align(Alignment.CenterVertically).padding(start = 9.dp, end = 9.dp))
                         RoundIconButtons(imageVector = Icons.Default.Add, onClick = {
                             if (splitByState.value < range.last) splitByState.value =
                                 splitByState.value + 1
@@ -215,22 +200,15 @@ fun BillForm(
                 }
                 // Tip Row
                 Row {
-                    Text(
-                        text = "Tip", modifier = Modifier
-                            .padding(start = 20.dp)
-                            .align(alignment = Alignment.CenterVertically)
-                    )
+                    Text(text = "Tip", modifier = Modifier.padding(start = 20.dp).align(alignment = Alignment.CenterVertically))
                     Spacer(modifier = Modifier.width(200.dp))
-                    Text(
-                        text = "$33.00",
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
-                    )
+                    Text(text = "${calculateTotalTip(totalBillState.value.toDouble(), tipPercentage)}", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                 }
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "33%")
+                    Text(text = "$tipPercentage%")
                     Spacer(modifier = Modifier.height(14.dp))
 
                     // Slider
