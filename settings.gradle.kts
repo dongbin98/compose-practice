@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "ComposePractice"
 include(":app")
 include(":tipcalculator")
+include(":androidcodelabex")
