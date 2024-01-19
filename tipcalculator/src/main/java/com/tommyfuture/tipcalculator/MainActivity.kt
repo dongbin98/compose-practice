@@ -59,8 +59,15 @@ class MainActivity : ComponentActivity() {
 fun MyApp(content: @Composable () -> Unit) {
     ComposePracticeTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            //TopHeader()
-            MainContent()
+            Column {
+                val totalPerPersonState = remember {
+                    mutableStateOf(0.0)
+                }
+                Spacer(modifier = Modifier.height(30.dp))
+                TopHeader(totalPerPersonState.value)
+                Spacer(modifier = Modifier.height(30.dp))
+                MainContent(totalPerPersonState)
+            }
         }
     }
 }
@@ -107,15 +114,12 @@ fun TopHeader(totalPerPerson: Double = 0.0) {
 
 @ExperimentalComposeUiApi
 @Composable
-fun MainContent() {
+fun MainContent(totalPerPersonState: MutableState<Double>) {
     val tipAmountState = remember {
         mutableStateOf(0.0)
     }
     val splitByState = remember {
         mutableStateOf(1)
-    }
-    val totalPerPersonState = remember {
-        mutableStateOf(0.0)
     }
     val range = IntRange(start = 1, endInclusive = 100)
     BillForm(
@@ -170,7 +174,7 @@ fun BillForm(
             )
             if (validState) {
                 Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
-                    Text(text = "Split", modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                    Text(text = "Split", modifier = Modifier.padding(start = 20.dp).align(alignment = Alignment.CenterVertically)
                     )
                     Spacer(modifier = Modifier.width(120.dp))
                     Row(modifier = Modifier.padding(horizontal = 3.dp),
@@ -186,7 +190,9 @@ fun BillForm(
                                     tipPercentage
                                 )
                             })
-                        Text(text = "${splitByState.value}", modifier = Modifier.align(Alignment.CenterVertically).padding(start = 9.dp, end = 9.dp))
+                        Text(text = "${splitByState.value}", modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(start = 9.dp, end = 9.dp))
                         RoundIconButtons(imageVector = Icons.Default.Add, onClick = {
                             if (splitByState.value < range.last) splitByState.value =
                                 splitByState.value + 1
@@ -200,7 +206,9 @@ fun BillForm(
                 }
                 // Tip Row
                 Row {
-                    Text(text = "Tip", modifier = Modifier.padding(start = 20.dp).align(alignment = Alignment.CenterVertically))
+                    Text(text = "Tip", modifier = Modifier
+                        .padding(start = 20.dp)
+                        .align(alignment = Alignment.CenterVertically))
                     Spacer(modifier = Modifier.width(200.dp))
                     Text(text = "${calculateTotalTip(totalBillState.value.toDouble(), tipPercentage)}", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                 }
@@ -241,6 +249,6 @@ fun calculateTotalTip(totalBill: Double, tipPercentage: Int): Double {
 }
 
 fun calculateTotalPerPerson(totalBill: Double, splitBy: Int, tipPercentage: Int): Double {
-    val bill = calculateTotalTip(totalBill, tipPercentage) * totalBill
+    val bill = calculateTotalTip(totalBill, tipPercentage)
     return (bill / splitBy)
 }
